@@ -59,7 +59,7 @@ public class ApplicationDbContext : DbContext
                 Title = "คอนโดหรูใจกลางเมือง",
                 Price = 3500000.00m,
                 Location = "สาทร, กรุงเทพมหานคร",
-                ImageUrl = "https://example.com/images/condo1.jpg",
+                ImageUrl = "https://www.banidea.com/wp-content/uploads/2013/12/Bangkok-Horizon-Sathorn-1.jpg",
                 Description = "คอนโดมิเนียมสุดหรู 2 ห้องนอน 2 ห้องน้ำ พร้อมสระว่ายน้ำและฟิตเนส"
             },
             new Property
@@ -68,7 +68,7 @@ public class ApplicationDbContext : DbContext
                 Title = "บ้านเดี่ยว 3 ชั้น ทำเลดี",
                 Price = 8900000.00m,
                 Location = "ลาดพร้าว, กรุงเทพมหานคร",
-                ImageUrl = "https://example.com/images/house1.jpg",
+                ImageUrl = "https://img.iproperty.com.my/thinkofliving/750x500-fit,format=webp/wp-content/uploads/1/2018/01/image2.jpeg",
                 Description = "บ้านเดี่ยว 4 ห้องนอน 5 ห้องน้ำ พื้นที่ 250 ตร.ม. จอดรถได้ 3 คัน"
             },
             new Property
@@ -77,7 +77,7 @@ public class ApplicationDbContext : DbContext
                 Title = "ทาวน์เฮ้าส์สไตล์โมเดิร์น",
                 Price = 4200000.00m,
                 Location = "รังสิต, ปทุมธานี",
-                ImageUrl = "https://example.com/images/townhouse1.jpg",
+                ImageUrl = "https://www.realasset.co.th/upload/project/Home-1000x700.jpg",
                 Description = "ทาวน์เฮ้าส์ 3 ห้องนอน 3 ห้องน้ำ ตกแต่งครบพร้อมอยู่"
             },
             new Property
@@ -86,7 +86,7 @@ public class ApplicationDbContext : DbContext
                 Title = "คอนโดวิวทะเล ชั้น 15",
                 Price = 5600000.00m,
                 Location = "พัทยา, ชลบุรี",
-                ImageUrl = "https://example.com/images/condo2.jpg",
+                ImageUrl = "https://condo-data.s3.ap-southeast-1.amazonaws.com/Condo-Tree-Tops-Pattaya-title20220221163155.jpg",
                 Description = "คอนโด 2 ห้องนอน วิวทะเลสวยงาม ใกล้ชายหาด"
             },
             new Property
@@ -95,7 +95,7 @@ public class ApplicationDbContext : DbContext
                 Title = "อพาร์ทเมนท์ใกล้ BTS",
                 Price = 2100000.00m,
                 Location = "อารีย์, กรุงเทพมหานคร",
-                ImageUrl = "https://example.com/images/apartment1.jpg",
+                ImageUrl = "https://bcdn.renthub.in.th/listing_picture/202005/20200515/cG6LAmJRFG6RsNWSsiqy.jpg?class=lthumbnail",
                 Description = "สตูดิโอขนาด 30 ตร.ม. เดินไป BTS 5 นาที"
             }
         );
