@@ -31,7 +31,7 @@ public class FavoritesController : ControllerBase
         }
 
         var favorites = await query.ToListAsync();
-        
+
         var result = new JArray();
         foreach (var fav in favorites)
         {
@@ -51,7 +51,7 @@ public class FavoritesController : ControllerBase
             };
             result.Add(favObj);
         }
-        
+
         return result.ToString();
     }
 
@@ -86,58 +86,67 @@ public class FavoritesController : ControllerBase
             };
             result.Add(propObj);
         }
-        
+
         return result.ToString();
     }
 
     // POST: api/favorites
     [HttpPost]
-    public async Task<string> AddFavorite([FromBody] JObject data)
+    public async Task<IActionResult> AddFavorite([FromBody] AddFavoriteRequest request)
     {
-        var userId = data["userId"]?.ToObject<int>() ?? 0;
-        var propertyId = data["propertyId"]?.ToObject<int>() ?? 0;
+        if (request == null || request.UserId == 0 || request.PropertyId == 0)
+        {
+            return BadRequest(new { error = "กรุณาระบุ userId และ propertyId" });
+        }
 
-        var userExists = await _context.Users.AnyAsync(u => u.Id == userId);
+        var userExists = await _context.Users.AnyAsync(u => u.Id == request.UserId);
         if (!userExists)
         {
-            var error = new JObject { ["error"] = "ไม่พบผู้ใช้" };
-            return error.ToString();
+            return NotFound(new { error = "ไม่พบผู้ใช้" });
         }
 
-        var propertyExists = await _context.Properties.AnyAsync(p => p.Id == propertyId);
+        var propertyExists = await _context.Properties.AnyAsync(p => p.Id == request.PropertyId);
         if (!propertyExists)
         {
-            var error = new JObject { ["error"] = "ไม่พบอสังหาริมทรัพย์" };
-            return error.ToString();
+            return NotFound(new { error = "ไม่พบอสังหาริมทรัพย์" });
         }
 
-        var exists = await _context.Favorites
-            .AnyAsync(f => f.UserId == userId && f.PropertyId == propertyId);
-        if (exists)
+        // ตรวจสอบว่ามีรายการโปรดอยู่แล้วหรือไม่
+        var existingFavorite = await _context.Favorites
+            .FirstOrDefaultAsync(f => f.UserId == request.UserId && f.PropertyId == request.PropertyId);
+
+        if (existingFavorite != null)
         {
-            var error = new JObject { ["error"] = "รายการโปรดนี้มีอยู่แล้ว" };
-            return error.ToString();
+            // ถ้ามีอยู่แล้ว ให้ลบออก (Unlike)
+            _context.Favorites.Remove(existingFavorite);
+            await _context.SaveChangesAsync();
+
+            return Ok(new
+            {
+                userId = request.UserId,
+                propertyId = request.PropertyId,
+                message = "ลบรายการโปรดสำเร็จ"
+            });
         }
 
+        // ถ้ายังไม่มี ให้เพิ่มใหม่ (Like)
         var favorite = new Favorite
         {
-            UserId = userId,
-            PropertyId = propertyId,
+            UserId = request.UserId,
+            PropertyId = request.PropertyId,
             CreatedAt = DateTime.UtcNow
         };
 
         _context.Favorites.Add(favorite);
         await _context.SaveChangesAsync();
 
-        var result = new JObject
+        return Ok(new
         {
-            ["userId"] = favorite.UserId,
-            ["propertyId"] = favorite.PropertyId,
-            ["createdAt"] = favorite.CreatedAt,
-            ["message"] = "เพิ่มรายการโปรดสำเร็จ"
-        };
-        
-        return result.ToString();
+            userId = favorite.UserId,
+            propertyId = favorite.PropertyId,
+            createdAt = favorite.CreatedAt,
+            message = "เพิ่มรายการโปรดสำเร็จ"
+        });
     }
 
     // DELETE: api/favorites/user/1/property/2
@@ -179,7 +188,7 @@ public class FavoritesController : ControllerBase
             ["shareUrl"] = shareUrl,
             ["message"] = "คัดลอก URL นี้เพื่อแชร์รายการโปรดของคุณ"
         };
-        
+
         return result.ToString();
     }
 }

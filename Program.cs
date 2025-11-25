@@ -4,6 +4,9 @@ using PropertyFavoritesApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// กำหนด Port ตายตัว
+builder.WebHost.UseUrls("http://localhost:5292");
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
